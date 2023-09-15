@@ -14,22 +14,16 @@ public class QuadTree {
         this.root = root;
         this.maxCounterObject = maxCounterObject;
     }
-
     public QuadTree(int x, int y, int height, int width, int maxCounterObject) {
         root = null;
         this.maxCounterObject = maxCounterObject;
         this.zone = new Zone(x,y,height,width);
     }
-    public void add(Value value){
-        addEl(value);
-    }
-    public void add(int[] value){
-        if(value.length != 2){
+    public void add(int[] data){
+        if(data.length != 2){
             return;
         }
-        addEl(new Value(value[0], value[1], "null"));
-    }
-    private void addEl(Value value){
+        Value value = new Value(data[0], data[1], "null");
         if(root == null){
             root = new QuadTreeNode( maxCounterObject, null, zone, "0");
             root.addValue(value);

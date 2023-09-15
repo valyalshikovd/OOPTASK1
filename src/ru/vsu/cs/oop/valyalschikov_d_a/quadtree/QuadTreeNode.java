@@ -4,13 +4,11 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
-
 public class QuadTreeNode {
-
-    private int maxCountObject;
+    final private int maxCountObject;
     private int countObject;
     private String id = "";
-    private Zone zone;
+    final private Zone zone;
     private QuadTreeNode NW;
     private QuadTreeNode NE;
     private QuadTreeNode SE;
@@ -44,9 +42,6 @@ public class QuadTreeNode {
     int getMaxCountObject() {
         return maxCountObject;
     }
-    void setMaxCountObject(int maxCountObject) {
-        this.maxCountObject = maxCountObject;
-    }
     int getCountObject() {
         return countObject;
     }
@@ -67,9 +62,6 @@ public class QuadTreeNode {
     }
     Zone getZone() {
         return zone;
-    }
-    void setZone(Zone zone) {
-        this.zone = zone;
     }
     List<Value> getValues() {
         return values;
