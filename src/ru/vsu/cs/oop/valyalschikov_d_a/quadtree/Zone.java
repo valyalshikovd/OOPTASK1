@@ -1,6 +1,6 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
-public class Zone {
+class Zone {
     private int x;
     private int y;
     private int height;

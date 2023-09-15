@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
-public class QuadTreeNode {
+class QuadTreeNode {
     final private int maxCountObject;
     private int countObject;
     private String id = "";
