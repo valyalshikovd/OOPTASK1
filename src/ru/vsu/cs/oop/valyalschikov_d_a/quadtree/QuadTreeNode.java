@@ -1,4 +1,4 @@
-package ru.vsu.cs.oop.valyalschikov_d_a;
+package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -14,107 +14,83 @@ public class QuadTreeNode {
     private QuadTreeNode NW;
     private QuadTreeNode NE;
     private QuadTreeNode SE;
-
     public QuadTreeNode getNW() {
         return NW;
     }
-
-    public void setNW(QuadTreeNode NW) {
+    void setNW(QuadTreeNode NW) {
         this.NW = NW;
     }
-
-    public QuadTreeNode getNE() {
+    QuadTreeNode getNE() {
         return NE;
     }
-
-    public void setNE(QuadTreeNode NE) {
+    void setNE(QuadTreeNode NE) {
         this.NE = NE;
     }
-
-    public QuadTreeNode getSE() {
+    QuadTreeNode getSE() {
         return SE;
     }
-
-    public void setSE(QuadTreeNode SE) {
+    void setSE(QuadTreeNode SE) {
         this.SE = SE;
     }
-
-    public QuadTreeNode getSW() {
+    QuadTreeNode getSW() {
         return SW;
     }
-
-    public void setSW(QuadTreeNode SW) {
+    void setSW(QuadTreeNode SW) {
         this.SW = SW;
     }
-
     private QuadTreeNode SW;
     private List<Value> values = new ArrayList<>();
     private QuadTreeNode nodeParent;
-
-    public int getMaxCountObject() {
+    int getMaxCountObject() {
         return maxCountObject;
     }
-
-    public void setMaxCountObject(int maxCountObject) {
+    void setMaxCountObject(int maxCountObject) {
         this.maxCountObject = maxCountObject;
     }
-
-    public int getCountObject() {
+    int getCountObject() {
         return countObject;
     }
-
-    public void setCountObject(int countObject) {
+    void setCountObject(int countObject) {
         this.countObject = countObject;
     }
-
-    public void setParent(QuadTreeNode parent) {
+    void setParent(QuadTreeNode parent) {
         nodeParent = parent;
     }
-    public QuadTreeNode getParent() {
+    QuadTreeNode getParent() {
         return nodeParent;
     }
-
-    public String getId() {
+    String getId() {
         return id;
     }
-
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
-
-    public Zone getZone() {
+    Zone getZone() {
         return zone;
     }
-
-    public void setZone(Zone zone) {
+    void setZone(Zone zone) {
         this.zone = zone;
     }
-
-
-    public List<Value> getValues() {
+    List<Value> getValues() {
         return values;
     }
-
-    public void setValues(List<Value> values) {
+    void setValues(List<Value> values) {
         this.values = values;
     }
-
-    public QuadTreeNode getNodeParent() {
+    QuadTreeNode getNodeParent() {
         return nodeParent;
     }
-
-    public void setNodeParent(QuadTreeNode nodeParent) {
+    void setNodeParent(QuadTreeNode nodeParent) {
         this.nodeParent = nodeParent;
     }
-
-    public QuadTreeNode(int maxCountObject, QuadTreeNode parent, Zone zone, String id) {
+    QuadTreeNode(int maxCountObject, QuadTreeNode parent, Zone zone, String id) {
         this.maxCountObject = maxCountObject;
         this.countObject = 0;
         this.nodeParent = parent;
         this.zone = zone;
         this.id = id;
     }
-    public void addValue(Value value){
+    void addValue(Value value){
         if (countObject < maxCountObject && countObject != -1){
             values.add(value);
             countObject++;
@@ -214,7 +190,7 @@ public class QuadTreeNode {
         this.values.clear();
         this.countObject = -1;
     }
-    public void write(){
+    void write(){
         if(countObject == -1){
             NW.write();
             NE.write();
@@ -222,12 +198,11 @@ public class QuadTreeNode {
             SW.write();
             return;
         }
-        System.out.println("Node - " + id + " Elements: ");
         for (Value value : values){
             value.write();
         }
     }
-    public void draw(Graphics2D g){
+    void draw(Graphics2D g){
         Rectangle rectangle = new Rectangle(zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth());
         g.draw(rectangle);
         if(countObject < 0){
@@ -243,7 +218,7 @@ public class QuadTreeNode {
         }
         g.setColor(Color.black);
     }
-    public void remove(Value value){
+    void remove(Value value){
         for(int i = 0; i < countObject; i++){
             if(values.get(i).getX() == value.getX()
             && values.get(i).getY() == value.getY()){

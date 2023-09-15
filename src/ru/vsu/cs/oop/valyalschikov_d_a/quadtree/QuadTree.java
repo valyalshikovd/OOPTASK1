@@ -1,4 +1,4 @@
-package ru.vsu.cs.oop.valyalschikov_d_a;
+package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
 import java.awt.*;
 
@@ -39,7 +39,7 @@ public class QuadTree {
     }
     public void consoleWrite(){
         if(root == null){
-            System.out.println("ru.vsu.cs.oop.valyalschikov_d_a.QuadTree is a void");
+            System.out.println("ru.vsu.cs.oop.valyalschikov_d_a.quadtree.QuadTree is a void");
         }
         root.write();
     }
