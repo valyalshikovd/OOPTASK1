@@ -1,10 +1,10 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
-class Value {
+class Point<T>{
     private int x;
     private int y;
+    private T value;
     private String desc;
-
     String getDesc() {
         return desc;
     }
