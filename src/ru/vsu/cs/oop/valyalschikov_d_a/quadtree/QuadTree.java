@@ -1,16 +1,15 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
-
 import java.awt.*;
 
-public class QuadTree {
-    private QuadTreeNode root;
+public class QuadTree<T>  {
+    private QuadTreeNode<T> root;
     private int maxCounterObject;
-    private Zone zone;
-    public QuadTreeNode getRoot() {
+    private final Zone zone;
+    public QuadTreeNode<T> getRoot() {
         return root;
     }
 
-    public void setRoot(QuadTreeNode root, int maxCounterObject) {
+    public void setRoot(QuadTreeNode<T> root, int maxCounterObject) {
         this.root = root;
         this.maxCounterObject = maxCounterObject;
     }
@@ -19,13 +18,10 @@ public class QuadTree {
         this.maxCounterObject = maxCounterObject;
         this.zone = new Zone(x,y,height,width);
     }
-    public void add(int[] data){
-        if(data.length != 2){
-            return;
-        }
-        Value value = new Value(data[0], data[1], "null");
+    public void add(int x, int y, String desc, T data){
+        Point<T> value = new Point<>(x, y, desc, data );
         if(root == null){
-            root = new QuadTreeNode( maxCounterObject, null, zone, "0");
+            root = new QuadTreeNode<>( maxCounterObject, null, zone, "0");
             root.addValue(value);
             return;
         }
@@ -33,21 +29,16 @@ public class QuadTree {
     }
     public void consoleWrite(){
         if(root == null){
-            System.out.println("ru.vsu.cs.oop.valyalschikov_d_a.quadtree.QuadTree is a void");
+            System.out.println("QuadTree is a void");
         }
         root.write();
     }
-    public void draw(Graphics2D g){
-        if(root != null){
-            root.draw(g);
-        }
-    }
-    public void remove(Value value){
+    public void remove(Point<T> value){
         root.remove(value);
     }
-    public QuadTreeNode find(String desc){
+    public QuadTreeNode<T> find(String desc){
         String[] ar = desc.split("_");
-        QuadTreeNode curr = root;
+        QuadTreeNode<T> curr = root;
         for (String s : ar) {
             switch (s) {
                 case "nw": curr = curr.getNW();
@@ -58,5 +49,10 @@ public class QuadTree {
             }
         }
         return curr;
+    }
+    public void draw(Graphics2D g){
+        if(this.getRoot() != null){
+            this.getRoot().draw(g);
+        }
     }
 }

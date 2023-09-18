@@ -8,7 +8,6 @@ class Point<T>{
     String getDesc() {
         return desc;
     }
-
     void setDesc(String desc) {
         this.desc = desc;
     }
@@ -28,11 +27,14 @@ class Point<T>{
     void setY(int y) {
         this.y = y;
     }
+    void setValue(T value) { this.value = value;}
+    T getValue() { return this.value;}
 
-    Value(int x, int y, String desc) {
+    Point(int x, int y, String desc, T value) {
         this.x = x;
         this.y = y;
         this.desc = desc;
+        this.value = value;
     }
     void write(){
         System.out.println("X = " +  x  + " Y = " + y + " Desc: " + desc + " ");

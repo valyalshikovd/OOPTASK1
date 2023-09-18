@@ -1,44 +1,43 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
-
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
-class QuadTreeNode {
+class QuadTreeNode<T> {
     final private int maxCountObject;
     private int countObject;
-    private String id = "";
+    private String id;
     final private Zone zone;
-    private QuadTreeNode NW;
-    private QuadTreeNode NE;
-    private QuadTreeNode SE;
-    public QuadTreeNode getNW() {
+    private QuadTreeNode<T> NW;
+    private QuadTreeNode<T> NE;
+    private QuadTreeNode<T> SE;
+    private QuadTreeNode<T> SW;
+    private List<Point<T>> values = new ArrayList<>();
+    private QuadTreeNode<T> nodeParent;
+    public QuadTreeNode<T> getNW() {
         return NW;
     }
-    void setNW(QuadTreeNode NW) {
+    void setNW(QuadTreeNode<T> NW) {
         this.NW = NW;
     }
-    QuadTreeNode getNE() {
+    QuadTreeNode<T> getNE() {
         return NE;
     }
-    void setNE(QuadTreeNode NE) {
+    void setNE(QuadTreeNode<T> NE) {
         this.NE = NE;
     }
-    QuadTreeNode getSE() {
+    QuadTreeNode<T> getSE() {
         return SE;
     }
-    void setSE(QuadTreeNode SE) {
+    void setSE(QuadTreeNode<T> SE) {
         this.SE = SE;
     }
-    QuadTreeNode getSW() {
+    QuadTreeNode<T> getSW() {
         return SW;
     }
-    void setSW(QuadTreeNode SW) {
+    void setSW(QuadTreeNode<T> SW) {
         this.SW = SW;
     }
-    private QuadTreeNode SW;
-    private List<Value> values = new ArrayList<>();
-    private QuadTreeNode nodeParent;
     int getMaxCountObject() {
         return maxCountObject;
     }
@@ -48,10 +47,10 @@ class QuadTreeNode {
     void setCountObject(int countObject) {
         this.countObject = countObject;
     }
-    void setParent(QuadTreeNode parent) {
+    void setParent(QuadTreeNode<T> parent) {
         nodeParent = parent;
     }
-    QuadTreeNode getParent() {
+    QuadTreeNode<T> getParent() {
         return nodeParent;
     }
     String getId() {
@@ -63,26 +62,26 @@ class QuadTreeNode {
     Zone getZone() {
         return zone;
     }
-    List<Value> getValues() {
+    List<Point<T>> getValues() {
         return values;
     }
-    void setValues(List<Value> values) {
+    void setValues(List<Point<T>> values) {
         this.values = values;
     }
-    QuadTreeNode getNodeParent() {
+    QuadTreeNode<T> getNodeParent() {
         return nodeParent;
     }
-    void setNodeParent(QuadTreeNode nodeParent) {
+    void setNodeParent(QuadTreeNode<T> nodeParent) {
         this.nodeParent = nodeParent;
     }
-    QuadTreeNode(int maxCountObject, QuadTreeNode parent, Zone zone, String id) {
+    QuadTreeNode(int maxCountObject, QuadTreeNode<T> parent, Zone zone, String id) {
         this.maxCountObject = maxCountObject;
         this.countObject = 0;
         this.nodeParent = parent;
         this.zone = zone;
         this.id = id;
     }
-    void addValue(Value value){
+    void addValue(Point<T> value){
         if (countObject < maxCountObject && countObject != -1){
             values.add(value);
             countObject++;
@@ -117,35 +116,35 @@ class QuadTreeNode {
         }
     }
     private void divide(){
-        NW = new QuadTreeNode(maxCountObject,
+        NW = new QuadTreeNode<>(maxCountObject,
                 this, new Zone(
                         zone.getX(),
                 zone.getY(),
                 zone.getHeight()/2,
                 zone.getWidth()/2),
                 id+ "_nw");
-        NE = new QuadTreeNode(maxCountObject,
+        NE = new QuadTreeNode<>(maxCountObject,
                 this, new Zone(
                 zone.getX()+ zone.getWidth()/2,
                 zone.getY(),
                 zone.getHeight()/2,
                 zone.getWidth()/2),
                 id+ "_ne");
-        SE = new QuadTreeNode(maxCountObject,
+        SE = new QuadTreeNode<>(maxCountObject,
                 this, new Zone(
                 zone.getX()+ zone.getWidth()/2,
                 zone.getY() + zone.getHeight()/2,
                 zone.getHeight()/2,
                 zone.getWidth()/2),
                 id+ "_se");
-        SW = new QuadTreeNode(maxCountObject,
+        SW = new QuadTreeNode<>(maxCountObject,
                 this, new Zone(
                 zone.getX(),
                 zone.getY() + zone.getHeight()/2,
                 zone.getHeight()/2,
                 zone.getWidth()/2),
                 id+ "_sw");
-        for(Value value : values){
+        for(Point<T> value : values){
             Zone tmpZone = NW.zone;
             if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
                     && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
@@ -176,7 +175,6 @@ class QuadTreeNode {
                     && value.getY() > tmpZone.getY()){
                 SW.values.add(value);
                 SW.countObject++;
-                continue;
             }
         }
         this.values.clear();
@@ -190,27 +188,11 @@ class QuadTreeNode {
             SW.write();
             return;
         }
-        for (Value value : values){
+        for (Point<T> value : values){
             value.write();
         }
     }
-    void draw(Graphics2D g){
-        Rectangle rectangle = new Rectangle(zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth());
-        g.draw(rectangle);
-        if(countObject < 0){
-            NW.draw(g);
-            NE.draw(g);
-            SE.draw(g);
-            SW.draw(g);
-        }
-        g.setColor(Color.red);
-        for (Value value: values){
-            Ellipse2D ellipse2D = new Ellipse2D.Double(value.getX(), value.getY(), 3, 3);
-            g.draw(ellipse2D);
-        }
-        g.setColor(Color.black);
-    }
-    void remove(Value value){
+    void remove(Point<T> value){
         for(int i = 0; i < countObject; i++){
             if(values.get(i).getX() == value.getX()
             && values.get(i).getY() == value.getY()){
@@ -246,5 +228,21 @@ class QuadTreeNode {
                 && value.getY() > tmpZone.getY()){
             SW.remove(value);
         }
+    }
+    void draw(Graphics2D g){
+        Rectangle rectangle = new Rectangle(zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth());
+        g.draw(rectangle);
+        if(countObject < 0){
+            NW.draw(g);
+            NE.draw(g);
+            SE.draw(g);
+            SW.draw(g);
+        }
+        g.setColor(Color.red);
+        for (ru.vsu.cs.oop.valyalschikov_d_a.quadtree.Point<T> value: values){
+            Ellipse2D ellipse2D = new Ellipse2D.Double(value.getX()-1, value.getY()-1, 3, 3);
+            g.draw(ellipse2D);
+        }
+        g.setColor(Color.black);
     }
 }
