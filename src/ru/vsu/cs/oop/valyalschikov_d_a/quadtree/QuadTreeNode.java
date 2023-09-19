@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+
 class QuadTreeNode<T> {
     final private int maxCountObject;
     private int countObject;
@@ -245,4 +248,16 @@ class QuadTreeNode<T> {
         }
         g.setColor(Color.black);
     }
+
+    void check(Stack<Point<T>> stack){
+        if(countObject != 0){
+            stack.addAll(values);
+        }
+        if(NW != null){ NW.check(stack);}
+        if(NE != null){ NE.check(stack);}
+        if(SE != null){ SE.check(stack);}
+        if(SW != null){ SW.check(stack);}
+    }
+
+
 }

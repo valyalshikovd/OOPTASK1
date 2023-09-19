@@ -1,34 +1,36 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
-class Point<T>{
+import java.util.Objects;
+
+public class Point<T>{
     private double x;
     private double y;
     private T value;
     private String desc;
-    String getDesc() {
+    public String getDesc() {
         return desc;
     }
-    void setDesc(String desc) {
+    public void setDesc(String desc) {
         this.desc = desc;
     }
 
-    double getX() {
+    public double getX() {
         return x;
     }
 
-    void setX(double x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    double getY() {
+    public double getY() {
         return y;
     }
 
-    void setY(int y) {
+    public void setY(int y) {
         this.y = y;
     }
-    void setValue(T value) { this.value = value;}
-    T getValue() { return this.value;}
+    public void setValue(T value) { this.value = value;}
+    public T getValue() { return this.value;}
 
     Point(int x, int y, String desc, T value) {
         this.x = x;
@@ -38,5 +40,28 @@ class Point<T>{
     }
     void write(){
         System.out.println("X = " +  x  + " Y = " + y + " Desc: " + desc + " ");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point<?> point = (Point<?>) o;
+        return Double.compare(point.x, x) == 0 && Double.compare(point.y, y) == 0 && value.equals(point.value) && desc.equals(point.desc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, value, desc);
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                ", value=" + value +
+                ", desc='" + desc + '\'' +
+                '}';
     }
 }
