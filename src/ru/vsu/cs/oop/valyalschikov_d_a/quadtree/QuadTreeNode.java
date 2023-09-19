@@ -81,9 +81,9 @@ class QuadTreeNode<T> {
         this.zone = zone;
         this.id = id;
     }
-    void addValue(Point<T> value){
+    void addValue(Point<T> point){
         if (countObject < maxCountObject && countObject != -1){
-            values.add(value);
+            values.add(point);
             countObject++;
             return;
         }
@@ -91,28 +91,28 @@ class QuadTreeNode<T> {
             this.divide();
         }
         Zone tmpZone = NW.zone;
-        if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
-            NW.addValue(value);
+        if(Double.compare(point.getX() , tmpZone.getX() + tmpZone.getWidth()) <0
+                && Double.compare(point.getY() , tmpZone.getY() + tmpZone.getHeight()) < 0){
+            NW.addValue(point);
         }
         tmpZone = NE.zone;
-        if(value.getX() > tmpZone.getX()
-                && value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
-            NE.addValue(value);
+        if(Double.compare(point.getX(), tmpZone.getX()) > 0
+                && Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
+                && Double.compare(point.getY(), tmpZone.getY() + tmpZone.getHeight()) < 0){
+            NE.addValue(point);
         }
         tmpZone = SE.zone;
-        if(value.getX() > tmpZone.getX()
-                && value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()
-                && value.getY() > tmpZone.getY()){
-            SE.addValue(value);
+        if(Double.compare(point.getX(), tmpZone.getX()) > 0
+                && Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
+                && Double.compare(point.getY(), tmpZone.getY() + tmpZone.getHeight()) < 0
+                && Double.compare(point.getY(), tmpZone.getY()) > 0){
+            SE.addValue(point);
         }
         tmpZone = SW.zone;
-        if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()
-                && value.getY() > tmpZone.getY()){
-            SW.addValue(value);
+        if(Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
+                && Double.compare(point.getY() , tmpZone.getY() + tmpZone.getHeight()) < 0
+                && Double.compare(point.getY() , tmpZone.getY()) > 0){
+            SW.addValue(point);
         }
     }
     private void divide(){
@@ -146,33 +146,33 @@ class QuadTreeNode<T> {
                 id+ "_sw");
         for(Point<T> value : values){
             Zone tmpZone = NW.zone;
-            if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                    && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
+            if(Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0){
                 NW.values.add(value);
                 NW.countObject++;
                 continue;
             }
             tmpZone = NE.zone;
-            if(value.getX() > tmpZone.getX()
-                    && value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                    && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
+            if(Double.compare(value.getX() , tmpZone.getX()) >= 0
+                    && Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0){
                 NE.values.add(value);
                 NE.countObject++;
                 continue;
             }
             tmpZone = SE.zone;
-            if(value.getX() > tmpZone.getX()
-                    && value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                    && value.getY() < tmpZone.getY() + tmpZone.getHeight()
-                    && value.getY() > tmpZone.getY()){
+            if(Double.compare(value.getX() , tmpZone.getX()) >= 0
+                    && Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0
+                    && Double.compare(value.getY() , tmpZone.getY()) >= 0){
                 SE.values.add(value);
                 SE.countObject++;
                 continue;
             }
             tmpZone = SW.zone;
-            if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                    && value.getY() < tmpZone.getY() + tmpZone.getHeight()
-                    && value.getY() > tmpZone.getY()){
+            if(Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0
+                    && Double.compare(value.getY() , tmpZone.getY()) >= 0){
                 SW.values.add(value);
                 SW.countObject++;
             }
@@ -194,38 +194,38 @@ class QuadTreeNode<T> {
     }
     void remove(Point<T> value){
         for(int i = 0; i < countObject; i++){
-            if(values.get(i).getX() == value.getX()
-            && values.get(i).getY() == value.getY()){
+            if(Double.compare( values.get(i).getX() , value.getX()) == 0
+                    && Double.compare(values.get(i).getY() , value.getY()) == 0){
                 values.remove(i);
                 this.countObject --;
                 return;
             }
         }
         Zone tmpZone = NW.zone;
-        if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
+        if(Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0){
             NW.remove(value);
             return;
         }
         tmpZone = NE.zone;
-        if(value.getX() > tmpZone.getX()
-                && value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()){
+        if(Double.compare(value.getX() , tmpZone.getX()) >= 0
+                && Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0){
             NE.remove(value);
             return;
         }
         tmpZone = SE.zone;
-        if(value.getX() > tmpZone.getX()
-                && value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()
-                && value.getY() > tmpZone.getY()){
+        if(Double.compare(value.getX() , tmpZone.getX()) >= 0
+                && Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0
+                && Double.compare(value.getY() , tmpZone.getY()) >= 0){
             SE.remove(value);
             return;
         }
         tmpZone = SW.zone;
-        if(value.getX() < tmpZone.getX() + tmpZone.getWidth()
-                && value.getY() < tmpZone.getY() + tmpZone.getHeight()
-                && value.getY() > tmpZone.getY()){
+        if(Double.compare(value.getX() , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                && Double.compare(value.getY() , tmpZone.getY() + tmpZone.getHeight()) <= 0
+                && Double.compare(value.getY() , tmpZone.getY()) >= 0){
             SW.remove(value);
         }
     }

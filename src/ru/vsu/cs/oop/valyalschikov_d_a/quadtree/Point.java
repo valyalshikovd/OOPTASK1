@@ -1,8 +1,8 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
 class Point<T>{
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private T value;
     private String desc;
     String getDesc() {
@@ -12,15 +12,15 @@ class Point<T>{
         this.desc = desc;
     }
 
-    int getX() {
+    double getX() {
         return x;
     }
 
-    void setX(int x) {
+    void setX(double x) {
         this.x = x;
     }
 
-    int getY() {
+    double getY() {
         return y;
     }
 
