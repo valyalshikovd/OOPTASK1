@@ -232,21 +232,14 @@ class QuadTreeNode<T> {
             SW.remove(value);
         }
     }
-    void draw(Graphics2D g){
-        Rectangle rectangle = new Rectangle(zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth());
-        g.draw(rectangle);
+    void getZoneAsArray(Stack<int[]> stack){
+        stack.push(new int[]{zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth()});
         if(countObject < 0){
-            NW.draw(g);
-            NE.draw(g);
-            SE.draw(g);
-            SW.draw(g);
+            NW.getZoneAsArray(stack);
+            NE.getZoneAsArray(stack);
+            SE.getZoneAsArray(stack);
+            SW.getZoneAsArray(stack);
         }
-        g.setColor(Color.red);
-        for (ru.vsu.cs.oop.valyalschikov_d_a.quadtree.Point<T> value: values){
-            Ellipse2D ellipse2D = new Ellipse2D.Double(value.getX()-1, value.getY()-1, 3, 3);
-            g.draw(ellipse2D);
-        }
-        g.setColor(Color.black);
     }
 
     void check(Stack<Point<T>> stack){

@@ -35,6 +35,13 @@ public class QuadTree<T> implements Collection<Point<T>> {
         }
         root.addValue(value);
     }
+    public Stack<int[]> getZones(){
+        Stack<int[]> stack = new Stack<>();
+        if (this.getRoot() != null) {
+            this.getRoot().getZoneAsArray(stack);
+        }
+        return stack;
+    }
 
     public void consoleWrite() {
         if (root == null) {
@@ -66,13 +73,6 @@ public class QuadTree<T> implements Collection<Point<T>> {
         }
         return curr;
     }
-
-    public void draw(Graphics2D g) {
-        if (this.getRoot() != null) {
-            this.getRoot().draw(g);
-        }
-    }
-
     @Override
     public int size() {
         return size;
