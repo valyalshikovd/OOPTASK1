@@ -202,4 +202,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
         size = 0;
     }
 
+    public void getByPointCoords(double x, double y){
+        root.findByPointCoords(x, y);
+    }
 }

@@ -252,5 +252,41 @@ class QuadTreeNode<T> {
         if(SW != null){ SW.check(stack);}
     }
 
+    T findByPointCoords(double x, double y){
+        if(countObject == -1){
+            Zone tmpZone = NW.zone;
+            if(Double.compare(x , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(y , tmpZone.getY() + tmpZone.getHeight()) <= 0){
+                return NW.findByPointCoords(x, y);
+            }
+            tmpZone = NE.zone;
+            if(Double.compare(x , tmpZone.getX()) >= 0
+                    && Double.compare(x , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(y , tmpZone.getY() + tmpZone.getHeight()) <= 0){
+                return NE.findByPointCoords(x, y);
+            }
+            tmpZone = SE.zone;
+            if(Double.compare(x , tmpZone.getX()) >= 0
+                    && Double.compare(x , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(y , tmpZone.getY() + tmpZone.getHeight()) <= 0
+                    && Double.compare(y , tmpZone.getY()) >= 0){
+                return SE.findByPointCoords(x,y);
+            }
+            tmpZone = SW.zone;
+            if(Double.compare(x , tmpZone.getX() + tmpZone.getWidth()) <= 0
+                    && Double.compare(y , tmpZone.getY() + tmpZone.getHeight()) <= 0
+                    && Double.compare(y , tmpZone.getY()) >= 0){
+                return SW.findByPointCoords(x,y);
+            }
+        }
+        for (Point<T> point : values){
+            if(Double.compare(point.getX(), x) == 0
+            && Double.compare(point.getY(), y) == 0){
+                return point.getValue();
+            }
+        }
+        return null;
+    }
+
 
 }
