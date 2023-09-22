@@ -196,6 +196,21 @@ class QuadTreeNode<T> {
         }
     }
     void remove(Point<T> value){
+        if(NW.countObject + NE.countObject + SE.countObject + SW.countObject == maxCountObject
+                && NW.countObject != -1
+                && NE.countObject != -1
+                && SE.countObject != -1
+                && SW.countObject != -1){
+                values.addAll(NW.values);
+                values.addAll(NE.values);
+                values.addAll(SW.values);
+                values.addAll(SE.values);
+                countObject = maxCountObject-1;
+                NW = null;
+                SW = null;
+                SE = null;
+                NE = null;
+        }
         for(int i = 0; i < countObject; i++){
             if(Double.compare( values.get(i).getX() , value.getX()) == 0
                     && Double.compare(values.get(i).getY() , value.getY()) == 0){
@@ -231,6 +246,9 @@ class QuadTreeNode<T> {
                 && Double.compare(value.getY() , tmpZone.getY()) >= 0){
             SW.remove(value);
         }
+
+
+        ////// сделать так чтобы квадранты схлопывались
     }
     void getZoneAsArray(Stack<int[]> stack){
         stack.push(new int[]{zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth()});
