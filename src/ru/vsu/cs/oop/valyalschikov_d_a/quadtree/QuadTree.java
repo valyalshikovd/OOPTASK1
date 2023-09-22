@@ -2,16 +2,13 @@ package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class QuadTree<T> implements Collection<Point<T>> {
     private QuadTreeNode<T> root;
     private int maxCounterObject;
     private final Zone zone;
     private int size;
-
-    public QuadTreeNode<T> getRoot() {
-        return root;
-    }
 
     public void setRoot(QuadTreeNode<T> root, int maxCounterObject) {
         this.root = root;
@@ -37,8 +34,8 @@ public class QuadTree<T> implements Collection<Point<T>> {
     }
     public Stack<int[]> getZones(){
         Stack<int[]> stack = new Stack<>();
-        if (this.getRoot() != null) {
-            this.getRoot().getZoneAsArray(stack);
+        if (root != null) {
+            root.getZoneAsArray(stack);
         }
         return stack;
     }
@@ -55,7 +52,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
         root.remove(value);
     }
 
-    public QuadTreeNode<T> find(String desc) {
+    public List<Point<T>> find(String desc) {
         String[] ar = desc.split("_");
         QuadTreeNode<T> curr = root;
         for (String s : ar) {
@@ -71,7 +68,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
                     break;
             }
         }
-        return curr;
+        return curr.getValues();
     }
     @Override
     public int size() {
@@ -128,6 +125,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
 
     @Override
     public boolean add(Point<T> t) {
+        size++;
         if (root == null) {
             root = new QuadTreeNode<>(maxCounterObject, null, zone, "0");
             root.addValue(t);
@@ -163,7 +161,6 @@ public class QuadTree<T> implements Collection<Point<T>> {
         }
         return true;
     }
-
     @Override
     public boolean addAll(Collection<? extends Point<T>> c) {
         for (Point<T> item : c) {
@@ -195,14 +192,12 @@ public class QuadTree<T> implements Collection<Point<T>> {
         }
         return true;
     }
-
     @Override
     public void clear() {
         root = null;
         size = 0;
     }
-
-    public void getByPointCoords(double x, double y){
-        root.findByPointCoords(x, y);
+    public T getByPointCoords(double x, double y){
+        return root.findByPointCoords(x, y);
     }
 }
