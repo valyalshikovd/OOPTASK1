@@ -5,6 +5,7 @@ import ru.vsu.cs.oop.valyalschikov_d_a.quadtree.Point;
 import ru.vsu.cs.oop.valyalschikov_d_a.quadtree.QuadTree;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,9 +26,6 @@ class QuadTreeTest {
         testQuadTree.add(new Point<String>(90, 90, "num5", "точка 5"));
         assertEquals(5, testQuadTree.size());
         Stack<int[]> stack = testQuadTree.getZones();
-        for (int[] zone : stack){
-            System.out.println(Arrays.toString(zone));
-        }
         int counter = 0;
         while (!stack.isEmpty()){
             stack.pop();
@@ -99,5 +97,16 @@ class QuadTreeTest {
         testQuadTree.add(new Point<String>(90, 90, "num5", "точка 5"));
         testQuadTree.add(new Point<String>(95, 95, "num6", "точка 6"));
         assertEquals(testQuadTree.getByPointCoords(40, 10),"точка 4" );
+    }
+
+    @org.junit.jupiter.api.Test
+    void find(){
+        testQuadTree.add(new Point<String>(10, 10, "num1", "точка 1"));
+        testQuadTree.add(new Point<String>(30, 20, "num2", "точка 2"));
+        testQuadTree.add(new Point<String>(30, 30, "num3", "точка 3"));
+        testQuadTree.add(new Point<String>(40, 10, "num4", "точка 4"));
+        testQuadTree.add(new Point<String>(90, 90, "num5", "точка 5"));
+        testQuadTree.add(new Point<String>(95, 95, "num6", "точка 6"));
+        assertEquals(testQuadTree.find("0_nw_se").get(0), new Point<String>(90, 90, "num5", "точка 5"));
     }
 }

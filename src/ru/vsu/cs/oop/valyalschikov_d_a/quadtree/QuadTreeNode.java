@@ -218,6 +218,7 @@ class QuadTreeNode<T> {
         }
         for (Point<T> value : values) {
             value.write();
+            System.out.println(id);
         }
     }
 

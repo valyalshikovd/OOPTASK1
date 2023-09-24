@@ -56,19 +56,23 @@ public class QuadTree<T> implements Collection<Point<T>> {
         String[] ar = desc.split("_");
         QuadTreeNode<T> curr = root;
         for (String s : ar) {
-            switch (s) {
-                case "nw":
-                    curr = curr.getNW();
-                case "ne":
-                    curr = curr.getNE();
-                case "se":
-                    curr = curr.getSE();
-                case "sw":
-                    curr = curr.getSW();
-                    break;
+            if(s.equals("nw")){
+                curr = curr.getNW();
+            }
+            if(s.equals("sw")){
+                curr = curr.getSW();
+            }
+            if(s.equals("se")){
+                curr = curr.getSE();
+            }
+            if(s.equals("ne")){
+                curr = curr.getNE();
             }
         }
-        return curr.getValues();
+        if(curr != null){
+            return curr.getValues();
+        }
+        return null;
     }
     @Override
     public int size() {
