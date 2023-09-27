@@ -25,7 +25,7 @@ class QuadTreeTest {
         assertEquals(4, testQuadTree.size());
         testQuadTree.add(new Point<String>(90, 90, "num5", "точка 5"));
         assertEquals(5, testQuadTree.size());
-        Stack<int[]> stack = testQuadTree.getZones();
+        Stack<double[]> stack = testQuadTree.getZones();
         int counter = 0;
         while (!stack.isEmpty()){
             stack.pop();
@@ -54,7 +54,7 @@ class QuadTreeTest {
         testQuadTree.add(new Point<String>(30, 30, "num3", "точка 3"));
         testQuadTree.add(new Point<String>(40, 10, "num4", "точка 4"));
         testQuadTree.add(new Point<String>(90, 90, "num5", "точка 5"));
-        Stack<int[]> stack = testQuadTree.getZones();
+        Stack<double[]> stack = testQuadTree.getZones();
         int counter = 0;
         while (!stack.isEmpty()){
             stack.pop();
@@ -80,7 +80,7 @@ class QuadTreeTest {
         testQuadTree.remove(new Point<String>(40, 10, "num4", "точка 4"));
 
         assertEquals(3, testQuadTree.size());
-        Stack<int[]> stack = testQuadTree.getZones();
+        Stack<double[]> stack = testQuadTree.getZones();
         int counter = 0;
         while (!stack.isEmpty()){
             stack.pop();

@@ -1,10 +1,7 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Stack;
 
 class QuadTreeNode<T> {
@@ -17,40 +14,20 @@ class QuadTreeNode<T> {
     private QuadTreeNode<T> SE;
     private QuadTreeNode<T> SW;
     private List<Point<T>> values = new ArrayList<>();
-    private QuadTreeNode<T> nodeParent;
+
 
     public QuadTreeNode<T> getNW() {
         return NW;
     }
-
-    void setNW(QuadTreeNode<T> NW) {
-        this.NW = NW;
-    }
-
     QuadTreeNode<T> getNE() {
         return NE;
     }
-
-    void setNE(QuadTreeNode<T> NE) {
-        this.NE = NE;
-    }
-
     QuadTreeNode<T> getSE() {
         return SE;
     }
-
-    void setSE(QuadTreeNode<T> SE) {
-        this.SE = SE;
-    }
-
     QuadTreeNode<T> getSW() {
         return SW;
     }
-
-    void setSW(QuadTreeNode<T> SW) {
-        this.SW = SW;
-    }
-
     int getMaxCountObject() {
         return maxCountObject;
     }
@@ -62,23 +39,9 @@ class QuadTreeNode<T> {
     void setCountObject(int countObject) {
         this.countObject = countObject;
     }
-
-    void setParent(QuadTreeNode<T> parent) {
-        nodeParent = parent;
-    }
-
-    QuadTreeNode<T> getParent() {
-        return nodeParent;
-    }
-
     String getId() {
         return id;
     }
-
-    void setId(String id) {
-        this.id = id;
-    }
-
     Zone getZone() {
         return zone;
     }
@@ -90,24 +53,17 @@ class QuadTreeNode<T> {
     void setValues(List<Point<T>> values) {
         this.values = values;
     }
-
-    QuadTreeNode<T> getNodeParent() {
-        return nodeParent;
-    }
-
-    void setNodeParent(QuadTreeNode<T> nodeParent) {
-        this.nodeParent = nodeParent;
-    }
-
-    QuadTreeNode(int maxCountObject, QuadTreeNode<T> parent, Zone zone, String id) {
+    QuadTreeNode(int maxCountObject,  Zone zone, String id) {
         this.maxCountObject = maxCountObject;
         this.countObject = 0;
-        this.nodeParent = parent;
         this.zone = zone;
         this.id = id;
     }
 
     void addValue(Point<T> point) {
+        if(outOfRange(point)){
+            return;
+        }
         if (countObject < maxCountObject && countObject != -1) {
             values.add(point);
             countObject++;
@@ -117,89 +73,76 @@ class QuadTreeNode<T> {
             this.divide();
         }
         Zone tmpZone = NW.zone;
-        if (Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
-                && Double.compare(point.getY(), tmpZone.getY() + tmpZone.getHeight()) < 0) {
+        if (isNW(point, tmpZone)) {
             NW.addValue(point);
         }
         tmpZone = NE.zone;
-        if (Double.compare(point.getX(), tmpZone.getX()) > 0
-                && Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
-                && Double.compare(point.getY(), tmpZone.getY() + tmpZone.getHeight()) < 0) {
+        if (isNE(point, tmpZone)) {
             NE.addValue(point);
         }
         tmpZone = SE.zone;
-        if (Double.compare(point.getX(), tmpZone.getX()) > 0
-                && Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
-                && Double.compare(point.getY(), tmpZone.getY() + tmpZone.getHeight()) < 0
-                && Double.compare(point.getY(), tmpZone.getY()) > 0) {
+        if (isSE(point, tmpZone)) {
             SE.addValue(point);
         }
         tmpZone = SW.zone;
-        if (Double.compare(point.getX(), tmpZone.getX() + tmpZone.getWidth()) < 0
-                && Double.compare(point.getY(), tmpZone.getY() + tmpZone.getHeight()) < 0
-                && Double.compare(point.getY(), tmpZone.getY()) > 0) {
+        if (isSW(point, tmpZone)) {
             SW.addValue(point);
         }
+    }
+     boolean outOfRange(Point<T> pt){
+        return zone.getX() > pt.getX() || zone.getY() > pt.getY() || zone.xPlusWidth() < pt.getX() || zone.yPlusHeight() < pt.getY();
     }
 
     private void divide() {
         NW = new QuadTreeNode<>(maxCountObject,
-                this, new Zone(
+                new Zone(
                 zone.getX(),
                 zone.getY(),
-                zone.getHeight() / 2,
-                zone.getWidth() / 2),
+                zone.getHeight() * 0.5,
+                zone.getWidth() *0.5),
                 id + "_nw");
         NE = new QuadTreeNode<>(maxCountObject,
-                this, new Zone(
-                zone.getX() + zone.getWidth() / 2,
+                new Zone(
+                zone.getX() + zone.getWidth() *0.5,
                 zone.getY(),
-                zone.getHeight() / 2,
-                zone.getWidth() / 2),
+                zone.getHeight() *0.5,
+                zone.getWidth() *0.5),
                 id + "_ne");
         SE = new QuadTreeNode<>(maxCountObject,
-                this, new Zone(
-                zone.getX() + zone.getWidth() / 2,
-                zone.getY() + zone.getHeight() / 2,
-                zone.getHeight() / 2,
-                zone.getWidth() / 2),
+                new Zone(
+                zone.getX() + zone.getWidth() *0.5,
+                zone.getY() + zone.getHeight() *0.5,
+                zone.getHeight() *0.5,
+                zone.getWidth() *0.5),
                 id + "_se");
         SW = new QuadTreeNode<>(maxCountObject,
-                this, new Zone(
+                new Zone(
                 zone.getX(),
-                zone.getY() + zone.getHeight() / 2,
-                zone.getHeight() / 2,
-                zone.getWidth() / 2),
+                zone.getY() + zone.getHeight() *0.5,
+                zone.getHeight() *0.5,
+                zone.getWidth() *0.5),
                 id + "_sw");
         for (Point<T> value : values) {
             Zone tmpZone = NW.zone;
-            if (Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                    && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0) {
+            if (isNW(value, tmpZone)) {
                 NW.values.add(value);
                 NW.countObject++;
                 continue;
             }
             tmpZone = NE.zone;
-            if (Double.compare(value.getX(), tmpZone.getX()) >= 0
-                    && Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                    && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0) {
+            if (isNE(value, tmpZone)) {
                 NE.values.add(value);
                 NE.countObject++;
                 continue;
             }
             tmpZone = SE.zone;
-            if (Double.compare(value.getX(), tmpZone.getX()) >= 0
-                    && Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                    && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0
-                    && Double.compare(value.getY(), tmpZone.getY()) >= 0) {
+            if (isSE(value, tmpZone)) {
                 SE.values.add(value);
                 SE.countObject++;
                 continue;
             }
             tmpZone = SW.zone;
-            if (Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                    && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0
-                    && Double.compare(value.getY(), tmpZone.getY()) >= 0) {
+            if (isSW(value, tmpZone)) {
                 SW.values.add(value);
                 SW.countObject++;
             }
@@ -254,36 +197,28 @@ class QuadTreeNode<T> {
             return;
         }
         Zone tmpZone = NW.zone;
-        if (Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0) {
+        if (isNW(value,tmpZone)) {
             NW.remove(value);
             return;
         }
         tmpZone = NE.zone;
-        if (Double.compare(value.getX(), tmpZone.getX()) >= 0
-                && Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0) {
+        if (isNE(value, tmpZone)) {
             NE.remove(value);
             return;
         }
         tmpZone = SE.zone;
-        if (Double.compare(value.getX(), tmpZone.getX()) >= 0
-                && Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0
-                && Double.compare(value.getY(), tmpZone.getY()) >= 0) {
+        if (isSE(value,tmpZone)) {
             SE.remove(value);
             return;
         }
         tmpZone = SW.zone;
-        if (Double.compare(value.getX(), tmpZone.getX() + tmpZone.getWidth()) <= 0
-                && Double.compare(value.getY(), tmpZone.getY() + tmpZone.getHeight()) <= 0
-                && Double.compare(value.getY(), tmpZone.getY()) >= 0) {
+        if (isSW(value, tmpZone)) {
             SW.remove(value);
         }
     }
 
-    void getZoneAsArray(Stack<int[]> stack) {
-        stack.push(new int[]{zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth()});
+    void getZoneAsArray(Stack<double[]> stack) {
+        stack.push(new double[]{zone.getX(), zone.getY(), zone.getWidth(), zone.getWidth()});
         if (countObject < 0) {
             NW.getZoneAsArray(stack);
             NE.getZoneAsArray(stack);
@@ -291,8 +226,29 @@ class QuadTreeNode<T> {
             SW.getZoneAsArray(stack);
         }
     }
+     private boolean isSW(Point<T> value, Zone tmpZone){
+        return Double.compare(value.getX(), tmpZone.xPlusWidth()) <= 0
+                && Double.compare(value.getY(), tmpZone.yPlusHeight()) <= 0
+                && Double.compare(value.getY(), tmpZone.getY()) >= 0;
+     }
+     private boolean isSE(Point<T> value, Zone tmpZone){
+        return Double.compare(value.getX(), tmpZone.getX()) > 0
+                && Double.compare(value.getX(), tmpZone.xPlusWidth()) < 0
+                && Double.compare(value.getY(), tmpZone.yPlusHeight()) < 0
+                && Double.compare(value.getY(), tmpZone.getY()) > 0;
+     }
+    private boolean isNW(Point<T> value, Zone tmpZone){
+        return Double.compare(value.getX(), tmpZone.xPlusWidth()) <= 0
+                && Double.compare(value.getY(), tmpZone.yPlusHeight()) <= 0;
+    }
+    private boolean isNE(Point<T> value, Zone tmpZone){
+        return Double.compare(value.getX(), tmpZone.getX()) >= 0
+                && Double.compare(value.getX(), tmpZone.xPlusWidth()) <= 0
+                && Double.compare(value.getY(), tmpZone.yPlusHeight()) <= 0;
+    }
 
     void check(Stack<Point<T>> stack) {
+
         if (countObject != 0) {
             stack.addAll(values);
         }

@@ -1,6 +1,5 @@
 package ru.vsu.cs.oop.valyalschikov_d_a.quadtree;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -23,17 +22,18 @@ public class QuadTree<T> implements Collection<Point<T>> {
     }
 
     public void add(int x, int y, String desc, T data) {
-        size++;
         Point<T> value = new Point<>(x, y, desc, data);
+        if(zone.getX() > x || zone.getY() > y || zone.xPlusWidth() < x || zone.yPlusHeight() < y)
+        size++;
         if (root == null) {
-            root = new QuadTreeNode<>(maxCounterObject, null, zone, "0");
+            root = new QuadTreeNode<>(maxCounterObject, zone, "0");
             root.addValue(value);
             return;
         }
         root.addValue(value);
     }
-    public Stack<int[]> getZones(){
-        Stack<int[]> stack = new Stack<>();
+    public Stack<double[]> getZones(){
+        Stack<double[]> stack = new Stack<>();
         if (root != null) {
             root.getZoneAsArray(stack);
         }
@@ -131,7 +131,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
     public boolean add(Point<T> t) {
         size++;
         if (root == null) {
-            root = new QuadTreeNode<>(maxCounterObject, null, zone, "0");
+            root = new QuadTreeNode<>(maxCounterObject, zone, "0");
             root.addValue(t);
             return true;
         }

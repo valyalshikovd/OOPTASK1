@@ -9,12 +9,12 @@ import java.util.Stack;
 
 public class DrawTree {
     public void drawTree(QuadTree<?> tree, Graphics2D g){
-        Stack<int[]> stackZone = tree.getZones();
-        for(int[] zone : stackZone){
+        Stack<double[]> stackZone = tree.getZones();
+        for(double[] zone : stackZone){
             if(zone.length != 4){
                 continue;
             }
-            Rectangle rectangle = new Rectangle(zone[0], zone[1], zone[2], zone[3]);
+            Rectangle rectangle = new Rectangle( (int) Math.round(zone[0]), (int) Math.round(zone[1]), (int) Math.round(zone[2]), (int) Math.round(zone[3]));
             g.draw(rectangle);
         }
         g.setColor(Color.red);
