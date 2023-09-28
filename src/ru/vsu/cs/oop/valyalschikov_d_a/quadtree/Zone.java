@@ -22,6 +22,25 @@ class Zone {
         this.height = height;
         this.width = width;
     }
-    double yPlusHeight(){return y + height;}
-    double xPlusWidth(){return x + width;}
+    private double yPlusHeight(){return y + height;}
+    private double xPlusWidth(){return x + width;}
+
+    boolean isInside(Point pt ){
+        if(pt.getX() < x || pt.getX() > xPlusWidth()){
+            return false;
+        }
+        if(pt.getY() < y || pt.getY() > yPlusHeight()){
+            return false;
+        }
+        return true;
+    }
+    boolean isInside(double x, double y ){
+        if(x < this.x || x > xPlusWidth()){
+            return false;
+        }
+        if(y < this.y || y > yPlusHeight()){
+            return false;
+        }
+        return true;
+    }
 }
