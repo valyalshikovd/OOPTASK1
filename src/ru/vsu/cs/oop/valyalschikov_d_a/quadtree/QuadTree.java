@@ -23,7 +23,9 @@ public class QuadTree<T> implements Collection<Point<T>> {
 
     public void add(int x, int y, String desc, T data) {
         Point<T> value = new Point<>(x, y, desc, data);
-        if(zone.getX() > x || zone.getY() > y || zone.xPlusWidth() < x || zone.yPlusHeight() < y)
+        if(!zone.isInside(x, y)){
+            return;
+        }
         size++;
         if (root == null) {
             root = new QuadTreeNode<>(maxCounterObject, zone, "0");
