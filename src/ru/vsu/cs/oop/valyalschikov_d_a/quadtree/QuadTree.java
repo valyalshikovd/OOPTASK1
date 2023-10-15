@@ -28,7 +28,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
         }
         size++;
         if (root == null) {
-            root = new QuadTreeNode<>(maxCounterObject, zone, "0");
+            root = new QuadTreeNode<>(maxCounterObject, zone, new Path("00"));
             root.addValue(value);
             return;
         }
@@ -54,10 +54,10 @@ public class QuadTree<T> implements Collection<Point<T>> {
         root.remove(value);
     }
 
-    public List<Point<T>> find(String desc) {
-        String[] ar = desc.split("_");
+    public List<Point<T>> find(Path path) {
         QuadTreeNode<T> curr = root;
-        for (String s : ar) {
+        while (path.getPath() != null) {
+            String s = path.popLastPath();
             if(s.equals("nw")){
                 curr = curr.getNW();
             }
@@ -133,7 +133,7 @@ public class QuadTree<T> implements Collection<Point<T>> {
     public boolean add(Point<T> t) {
         size++;
         if (root == null) {
-            root = new QuadTreeNode<>(maxCounterObject, zone, "0");
+            root = new QuadTreeNode<>(maxCounterObject, zone, new Path("00"));
             root.addValue(t);
             return true;
         }
